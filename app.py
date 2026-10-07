@@ -83,7 +83,8 @@ def net_line(corners):
     tl, tr = top[np.argsort(top[:, 0])]
     bl, br = bottom[np.argsort(bottom[:, 0])]
     d1, d2 = br - tl, bl - tr
-    t_ = np.cross(tr - tl, d2) / np.cross(d1, d2)
+    cross = lambda a, b: a[0] * b[1] - a[1] * b[0]  # 2D cross product (np.cross no longer accepts 2D vectors)
+    t_ = cross(tr - tl, d2) / cross(d1, d2)
     cy = (tl + t_ * d1)[1]
     side = lambda a, b: a + (b - a) * (cy - a[1]) / (b[1] - a[1])
     return np.vstack([side(tl, bl), side(tr, br)])
